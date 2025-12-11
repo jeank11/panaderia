@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Mis Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-3">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-3">
+
+    <h2 class="mb-3">Mis Compras Pendientes</h2>
+
+    <a href="/ventas/historial" class="btn btn-secondary mb-3">
+        Ver historial de compras
+    </a>
+
+    <!-- Mensajes -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form action="/ventas/mis_compras/pagar" method="post">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Sel.</th>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Estado</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="v : ${ventas}"
+                            th:if="${v.estado == 'PENDIENTE' or v.estado == 'ESPERANDO_CONFIRMACION'}">
+
+                            <!-- Checkbox -->
+                            <td class="text-center">
+                                <input type="checkbox"
+                                       th:value="${v.id}" name="ids"
+                                       th:disabled="${v.estado == 'ESPERANDO_CONFIRMACION'}"
+                                       class="form-check-input">
+                            </td>
+
+                            <td th:text="${v.producto.nombre}"></td>
+                            <td th:text="${v.cantidad}"></td>
+                            <td>$ <span th:text="${v.producto.precio}"></span></td>
+                            <td>$ <span th:text="${subtotales[v.id]}"></span></td>
+
+                            <td>
+                                <span th:if="${v.estado == 'PENDIENTE'}"
+                                      class="badge bg-warning text-dark">Pendiente</span>
+
+                                <span th:if="${v.estado == 'ESPERANDO_CONFIRMACION'}"
+                                      class="badge bg-info text-dark">Esperando Confirmación</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Total -->
+                <div class="text-end mt-3">
+                    <h4>Total a pagar:
+                        <span class="text-primary">$ <span th:text="${totalGeneral}"></span></span>
+                    </h4>
+                </div>
+
+                <!-- Botón pagar -->
+                <button type="submit" class="btn btn-primary btn-lg mt-3 w-100">
+                    Pagar seleccionados
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

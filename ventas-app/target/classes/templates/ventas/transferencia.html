@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Pago por Transferencia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container py-4">
+
+    <!-- Título -->
+    <h2 class="text-center mb-4 fw-bold">Pago por Transferencia Bancaria</h2>
+
+    <!-- Total a transferir -->
+    <div class="alert alert-primary text-center fs-4 fw-semibold shadow-sm">
+        Total a transferir: $ <span th:text="${total}"></span>
+    </div>
+
+    <!-- Datos bancarios -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="mb-3">Datos Bancarios</h4>
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><b>Banco:</b> BROU</li>
+                <li class="list-group-item"><b>Número de Cuenta:</b> 110027653-00001</li>
+                <li class="list-group-item"><b>Titular:</b> Carlos Echeveste</li>
+                <li class="list-group-item"><b>Cel:</b> 099 025 988</li>
+            </ul>
+
+            <div class="alert alert-warning">
+                Realizá la transferencia por el monto indicado arriba y luego confirmá presionando el botón.
+            </div>
+        </div>
+    </div>
+
+    <!-- Compras seleccionadas -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="mb-3">Compras Incluidas en este Pago</h4>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="v : ${ventas}">
+                        <td th:text="${v.producto.nombre}"></td>
+                        <td th:text="${v.cantidad}"></td>
+                        <td>$ <span th:text="${v.cantidad * v.producto.precio}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Confirmar -->
+    <form th:action="@{/ventas/mis_compras/confirmar-transferencia}" method="post">
+        <div th:each="id : ${ids}">
+            <input type="hidden" name="ids" th:value="${id}">
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-success btn-lg px-4 w-100" type="submit">
+                ✔ Ya realicé la transferencia
+            </button>
+        </div>
+    </form>
+
+    <!-- Volver -->
+    <div class="text-center mt-3">
+        <a href="/ventas/mis_compras" class="btn btn-secondary w-100">
+            Volver
+        </a>
+    </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+

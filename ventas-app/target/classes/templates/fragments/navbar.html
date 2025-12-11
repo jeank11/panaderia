@@ -1,0 +1,97 @@
+<!-- templates/fragments/navbar.html -->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark" style="background-color:#6b4e3d;">
+    <div class="container-fluid">
+
+        <!-- Marca -->
+        <a class="navbar-brand fw-bold" href="/productos">
+            Panadería Echeveste
+        </a>
+
+        <!-- Botón móvil -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+
+                <!-- Productos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Productos</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/productos">Listar Productos</a></li>
+                        <li th:if="${userRole == 'ADMIN'}">
+                            <a class="dropdown-item" href="/productos/nuevo">Crear Producto</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Ventas -->
+                <li class="nav-item dropdown" th:if="${userRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Ventas</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/ventas/admin/vender-para">Vender para usuario</a></li>
+                        <li><a class="dropdown-item" href="/ventas/listar">Listar Ventas</a></li>
+                    </ul>
+                </li>
+
+                <!-- Pedidos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pedidos</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/pedidos/nuevo">Crear pedido</a></li>
+                        <li><a class="dropdown-item" href="/pedidos/mis_pedidos">Mis pedidos</a></li>
+                        <li th:if="${userRole == 'ADMIN'}">
+                            <a class="dropdown-item" href="/pedidos/listar">Listar pedidos</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Compras -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Compras</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/ventas/mis_compras">Compras pendientes</a></li>
+                        <li><a class="dropdown-item" href="/ventas/historial">Historial de compras</a></li>
+                    </ul>
+                </li>
+
+                <!-- Reportes -->
+                <li class="nav-item dropdown" th:if="${userRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Reportes</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/admin/pedidos_producto">Cantidad por Producto</a></li>
+                        <li><a class="dropdown-item" href="/admin/pedidos_por_producto_fecha">Por Producto y Fecha</a></li>
+                    </ul>
+                </li>
+
+                <!-- Usuarios -->
+                <li class="nav-item dropdown" th:if="${userRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Usuarios</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/admin/usuarios/listar">Listar Usuarios</a></li>
+                        <li><a class="dropdown-item" href="/admin/usuarios/nuevo">Crear Usuario</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <!-- Bienvenida y Logout -->
+            <div class="d-flex align-items-center gap-2 flex-column flex-lg-row text-center mt-3 mt-lg-0">
+                <span class="navbar-text text-white">
+                    Bienvenido, <span th:text="${userName}"></span>
+                </span>
+
+                <a class="btn btn-sm btn-light fw-bold" href="/logout">
+                    Cerrar sesión
+                </a>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+
+

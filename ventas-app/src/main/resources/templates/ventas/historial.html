@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Historial de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Historial de Compras</h2>
+
+    <a href="/ventas/mis_compras" class="btn btn-secondary mb-3">
+        ← Volver a compras pendientes
+    </a>
+
+    <!-- Contenedor responsive -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="v : ${ventas}"
+                th:if="${v.estado != 'PENDIENTE' && v.estado != 'ESPERANDO_CONFIRMACION'}">
+
+                <td th:text="${v.producto.nombre}"></td>
+                <td th:text="${v.cantidad}"></td>
+                <td th:text="${v.producto.precio}"></td>
+                <td th:text="${#numbers.formatDecimal(v.cantidad * v.producto.precio, 1, 'POINT', 2, 'POINT')}"></td>
+
+                <td>
+                    <span th:if="${v.estado == 'PAGADO'}" class="badge bg-success">Pagado</span>
+                    <span th:if="${v.estado == 'CANCELADO'}" class="badge bg-danger">Cancelado</span>
+                    <span th:if="${v.estado == 'RECHAZADO'}" class="badge bg-dark">Rechazado</span>
+
+                    <!-- Otros estados genéricos -->
+                    <span th:if="${v.estado != 'PAGADO' 
+                                  && v.estado != 'CANCELADO' 
+                                  && v.estado != 'RECHAZADO'}"
+                          class="badge bg-secondary"
+                          th:text="${v.estado}">
+                    </span>
+                </td>
+
+                <td th:text="${v.fecha != null ? v.fecha : '—'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
